@@ -1,20 +1,17 @@
-import com.sun.source.tree.Tree;
-import org.w3c.dom.ls.LSOutput;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
-import java.util.stream.Collectors;
 
 
 /***********************************************************************************************************************************************
- 1 - Assume the answer value and check whether it satisfies the condition
 
  ***********************************************************************************************************************************************/
 public class Main  {
     static FastReader in=new FastReader();
     static final Random random=new Random();
     static long mod=1000000007L;
-    static HashMap<Integer,Integer>map=new HashMap<>();
+    static HashMap<Integer,Integer> map=new HashMap<>();
 
     public static void main(String args[]) throws IOException {
         int T = in.nextInt();
@@ -23,72 +20,6 @@ public class Main  {
         loop:
         while (T-- > 0) {
 
-            int n = in.nextInt();
-            int m = in.nextInt();
-            ArrayList<Edge>[] graph = new ArrayList[n];
-
-            for(int i = 0; i < n; i++) {
-                graph[i] = new ArrayList<>();
-            }
-
-            for(int i = 0; i < m; i++) {
-                int u = in.nextInt() - 1;
-                int v = in.nextInt() - 1;
-                int w = in.nextInt();
-
-                Edge e = new Edge(u,v,w);
-                Edge r = new Edge(v,u,w);
-
-                graph[u].add(e);
-                graph[v].add(r);
-            }
-
-            int[] s = in.readintarray(n);
-
-            PriorityQueue<Pair> q = new PriorityQueue<>();
-            long[][] dist = new long[n][1001];
-
-            for(int i = 0; i < n; i++) {
-                for(int j = 0; j < 1001; j++) {
-                    dist[i][j] = Long.MAX_VALUE;
-                }
-            }
-
-            dist[0][s[0]] = 0;
-            boolean[][] visited = new boolean[n][1001];
-            q.add(new Pair(0,0,s[0]));
-            while(q.size() > 0) {
-                Pair p = q.remove();
-
-                int rv = p.v;
-                int rsf = p.c;
-
-                //print(p);
-                if(visited[rv][rsf]) continue ;
-
-                visited[rv][rsf] = true;
-
-                for(Edge e : graph[rv]) {
-                    int nbr = e.nbr;
-                    int nsf = Math.min(rsf, s[nbr]);
-
-                    if(dist[nbr][nsf] > p.d + 1l*e.w*rsf) {
-                        dist[nbr][nsf] = p.d + 1l*e.w*rsf;
-                        Pair np = new Pair(p.d + 1l*e.w*rsf, nbr, nsf);
-                        q.add(np);
-                    }
-
-
-
-                }
-            }
-
-            long ans = Long.MAX_VALUE;
-            for(int i = 0; i < 1001; i++) {
-                ans = Math.min(ans, dist[n - 1][i]);
-            }
-
-            print(ans);
 
         }
 
@@ -99,30 +30,6 @@ public class Main  {
     }
 
 
-    public static class Pair implements Comparable<Pair>{
-        long d;
-        int v;
-        int c;
-
-        public Pair(long d, int v, int c) {
-            this.d = d;
-            this.v = v;
-            this.c = c;
-        }
-
-        public int compareTo(Pair p) {
-            return (int)(d - p.d);
-        }
-
-        @Override
-        public String toString() {
-            return "Pair{" +
-                    "d=" + d +
-                    ", v=" + v +
-                    ", c=" + c +
-                    '}';
-        }
-    }
 
 
 
@@ -165,25 +72,6 @@ public class Main  {
 
 
 
-//    static class Pair implements Comparable<Pair>{
-//        public int a;
-//        public int b;
-//
-//        public Pair(int a, int b) {
-//            this.a = a;
-//            this.b = b;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return a + " " + b;
-//        }
-//
-//        @Override
-//        public int compareTo(Pair o) {
-//            return this.b - o.b;
-//        }
-//    }
 
     public static long kadane(ArrayList<Integer> list) {
         long ans = Long.MIN_VALUE;
@@ -210,26 +98,6 @@ public class Main  {
         return prefix;
     }
 
-    static class Edge {
-        int v;
-        int nbr;
-
-        int w;
-
-        public Edge(int v, int nbr, int w) {
-            this.v = v;
-            this.nbr = nbr;
-            this.w = w;
-        }
-
-        @Override
-        public String toString() {
-            return "Edge{" +
-                    "v=" + v +
-                    ", nbr=" + nbr +
-                    '}';
-        }
-    }
 
     static int[][] dirs = {{0,1}, {1,0}, {0,-1},{-1,0}};
 
